@@ -18,12 +18,12 @@ export default function ImportScreen() {
   const [glossContent, setGlossContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     if (fileUri && fileName) {
       processGlossFile(fileUri as string);
       
-      // Extract title from filename
       const namePart = (fileName as string).replace('-GLOSS.txt', '').replace(/_/g, ' ');
       setTitle(namePart);
     }
@@ -32,11 +32,12 @@ export default function ImportScreen() {
   const processGlossFile = async (uri: string) => {
     try {
       setProcessing(true);
+      setError(null);
       const content = await FileSystem.readAsStringAsync(uri as string);
       setGlossContent(content);
     } catch (error) {
       console.error('Error reading gloss file:', error);
-      alert('Failed to read gloss file.');
+      setError('Failed to read gloss file. Please try again.');
     } finally {
       setProcessing(false);
     }
@@ -44,6 +45,7 @@ export default function ImportScreen() {
   
   const selectSheetMusic = async () => {
     try {
+      setError(null);
       const result = await DocumentPicker.getDocumentAsync({
         type: 'application/pdf',
         copyToCacheDirectory: true,
@@ -55,17 +57,19 @@ export default function ImportScreen() {
       }
     } catch (error) {
       console.error('Error selecting sheet music:', error);
+      setError('Failed to select sheet music. Please try again.');
     }
   };
   
   const handleSave = async () => {
     if (!title.trim()) {
-      alert('Please enter a title for the song');
+      setError('Please enter a title for the song');
       return;
     }
     
     try {
       setLoading(true);
+      setError(null);
       
       const glossData = parseGlossFile(glossContent);
       
@@ -80,23 +84,28 @@ export default function ImportScreen() {
       
       await songStorage.addSong(newSong);
       
-      // Navigate to the player with the new song
       router.replace({
         pathname: '/player',
         params: { songId: newSong.id }
       });
     } catch (error) {
       console.error('Error saving song:', error);
-      alert('Failed to save song. Please try again.');
+      setError('Failed to save song. Please try again.');
     } finally {
       setLoading(false);
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <Text variant="titleLarge" style={styles.header}>Import New Song</Text>
+        
+        {error && (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+          </View>
+        )}
         
         <TextInput
           label="Song Title"
@@ -179,6 +188,15 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: 20,
+  },
+  errorContainer: {
+    backgroundColor: '#ffebee',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: '#c62828',
   },
   input: {
     marginBottom: 20,

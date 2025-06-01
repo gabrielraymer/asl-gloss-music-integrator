@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, Platform } from 'react-native';
 import { Text, IconButton, ProgressBar, Button } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -19,10 +19,61 @@ export default function PlayerScreen() {
   const [progress, setProgress] = useState(0);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   
-  // References
   const sound = useRef(new Audio.Sound());
   const progressInterval = useRef<any>(null);
   const scrollViewRef = useRef<ScrollView>(null);
+
+  const triggerBeatFeedback = () => {
+    if (Platform.OS !== 'web') {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+    // For web, we could add a visual feedback here if desired
+  };
+
+  useEffect(() => {
+    if (isPlaying) {
+      progressInterval.current = setInterval(() => {
+        setProgress(prev => {
+          const newProgress = prev + 0.005;
+          
+          if (Math.floor(prev * 20) !== Math.floor(newProgress * 20)) {
+            triggerBeatFeedback();
+          }
+          
+          const newLineIndex = Math.min(
+            Math.floor(newProgress * (song?.glossData?.length || 1)),
+            (song?.glossData?.length || 1) - 1
+          );
+          
+          if (newLineIndex !== currentLineIndex) {
+            setCurrentLineIndex(newLineIndex);
+            
+            if (scrollViewRef.current) {
+              scrollViewRef.current.scrollTo({
+                y: newLineIndex * 80,
+                animated: true,
+              });
+            }
+          }
+          
+          if (newProgress >= 1) {
+            clearInterval(progressInterval.current);
+            progressInterval.current = null;
+            setIsPlaying(false);
+            return 0;
+          }
+          
+          return newProgress;
+        });
+      }, 100);
+    }
+    
+    return () => {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+    };
+  }, [isPlaying, song?.glossData?.length, currentLineIndex]);
 
   useEffect(() => {
     loadSong();
@@ -74,47 +125,6 @@ export default function PlayerScreen() {
         }
       } else {
         await sound.current.playAsync();
-        
-        // Simulate progress for demonstration
-        progressInterval.current = setInterval(() => {
-          setProgress(prev => {
-            // Advance progress
-            const newProgress = prev + 0.005;
-            
-            // Simulate haptic feedback at beat points
-            if (Math.floor(prev * 20) !== Math.floor(newProgress * 20)) {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }
-            
-            // Update current line based on progress
-            const newLineIndex = Math.min(
-              Math.floor(newProgress * (song?.glossData?.length || 1)),
-              (song?.glossData?.length || 1) - 1
-            );
-            
-            if (newLineIndex !== currentLineIndex) {
-              setCurrentLineIndex(newLineIndex);
-              
-              // Scroll to the current line
-              if (scrollViewRef.current) {
-                scrollViewRef.current.scrollTo({
-                  y: newLineIndex * 80, // Approximate line height
-                  animated: true,
-                });
-              }
-            }
-            
-            if (newProgress >= 1) {
-              // Song finished
-              clearInterval(progressInterval.current);
-              progressInterval.current = null;
-              setIsPlaying(false);
-              return 0;
-            }
-            
-            return newProgress;
-          });
-        }, 100);
       }
       
       setIsPlaying(!isPlaying);
