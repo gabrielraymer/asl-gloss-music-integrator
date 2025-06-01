@@ -1,8 +1,9 @@
 import { StyleSheet, View } from 'react-native';
-import { Text, Button, Icon } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
+import { Music, AlertCircle, FileQuestion } from 'lucide-react-native';
 
 interface EmptyStateProps {
-  icon: string;
+  icon: 'music' | 'alert' | 'file';
   title: string;
   description: string;
   actionLabel?: string;
@@ -16,9 +17,15 @@ export function EmptyState({
   actionLabel, 
   onAction 
 }: EmptyStateProps) {
+  const IconComponent = {
+    music: Music,
+    alert: AlertCircle,
+    file: FileQuestion
+  }[icon];
+
   return (
     <View style={styles.container}>
-      <Icon source={icon} size={64} color="#9e9e9e" />
+      <IconComponent size={64} color="#9e9e9e" />
       <Text variant="titleMedium" style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
       {actionLabel && onAction && (

@@ -1,12 +1,7 @@
 import { Tabs } from 'expo-router';
 import { useColorScheme } from 'react-native';
 import Colors from '@/constants/Colors';
-import { 
-  Home as HomeIcon,
-  Music as MusicIcon,
-  BookOpen as LibraryIcon,
-  Settings as SettingsIcon,
-} from '@/components/icons';
+import { Home, Music, BookOpen, Settings } from 'lucide-react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -28,28 +23,28 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <HomeIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="library"
         options={{
           title: 'Library',
-          tabBarIcon: ({ color }) => <LibraryIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <BookOpen size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="player"
         options={{
           title: 'Player',
-          tabBarIcon: ({ color }) => <MusicIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Music size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <SettingsIcon size={24} color={color} />,
+          tabBarIcon: ({ color }) => <Settings size={24} color={color} />,
         }}
       />
     </Tabs>
