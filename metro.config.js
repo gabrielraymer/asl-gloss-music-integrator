@@ -6,11 +6,13 @@ const config = getDefaultConfig(__dirname);
 // Add additional asset extensions
 config.resolver.assetExts = [...assetExts, 'db', 'sqlite'];
 
-// Add additional source extensions
+// Add additional source extensions including TypeScript
 config.resolver.sourceExts = [
   ...sourceExts,
   'mjs',
-  'cjs'
+  'cjs',
+  'ts',
+  'tsx'
 ];
 
 // Configure the watchFolders to include node_modules
