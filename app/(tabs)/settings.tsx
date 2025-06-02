@@ -7,9 +7,7 @@ export default function SettingsScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text variant="headlineMedium" style={styles.title}>
-        Settings
-      </Text>
+      <Text variant="headlineMedium" style={styles.title}>Settings</Text>
     </View>
   );
 }
@@ -21,6 +19,5 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 20,
-    fontFamily: 'Inter_700Bold',
   },
 });

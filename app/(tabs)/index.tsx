@@ -7,12 +7,7 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text variant="headlineMedium" style={styles.title}>
-        Welcome to Expo Router
-      </Text>
-      <Text variant="bodyLarge" style={styles.subtitle}>
-        This is a minimal setup with tabs navigation
-      </Text>
+      <Text variant="headlineMedium" style={styles.title}>Welcome</Text>
     </View>
   );
 }
@@ -25,10 +20,5 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 20,
-    fontFamily: 'Inter_700Bold',
-  },
-  subtitle: {
-    textAlign: 'center',
-    fontFamily: 'Inter_400Regular',
   },
 });
