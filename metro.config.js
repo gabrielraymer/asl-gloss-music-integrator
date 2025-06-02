@@ -1,24 +1,19 @@
 const { getDefaultConfig } = require('expo/metro-config');
-const { resolver: { sourceExts, assetExts } } = getDefaultConfig(__dirname);
 
 const config = getDefaultConfig(__dirname);
 
 // Add additional asset extensions
-config.resolver.assetExts = [...assetExts, 'db', 'sqlite'];
+config.resolver.assetExts = [
+  ...config.resolver.assetExts,
+  'db',
+  'sqlite'
+];
 
 // Add additional source extensions including TypeScript
 config.resolver.sourceExts = [
-  ...sourceExts,
+  ...config.resolver.sourceExts,
   'mjs',
-  'cjs',
-  'ts',
-  'tsx'
-];
-
-// Configure the watchFolders to include node_modules
-config.watchFolders = [
-  ...config.watchFolders || [],
-  'node_modules'
+  'cjs'
 ];
 
 // Configure the transformer with proper Babel setup
@@ -36,5 +31,19 @@ config.transformer = {
     }
   }
 };
+
+// Configure the watchFolders to include node_modules
+config.watchFolders = [
+  ...(config.watchFolders || []),
+  'node_modules'
+];
+
+// Add transform options to handle TypeScript files in node_modules
+config.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: false,
+    inlineRequires: true,
+  },
+});
 
 module.exports = config;
