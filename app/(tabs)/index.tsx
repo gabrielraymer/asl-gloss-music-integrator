@@ -7,7 +7,12 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Text variant="headlineMedium" style={styles.title}>Welcome</Text>
+      <Text variant="headlineMedium" style={styles.title}>
+        Welcome to Your App
+      </Text>
+      <Text variant="bodyLarge" style={styles.subtitle}>
+        This is a basic setup with tabs navigation
+      </Text>
     </View>
   );
 }
@@ -17,8 +22,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#fff',
   },
   title: {
     marginBottom: 20,
+  },
+  subtitle: {
+    textAlign: 'center',
+    color: '#666',
   },
 });
