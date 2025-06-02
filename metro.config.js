@@ -21,12 +21,13 @@ config.watchFolders = [
   'node_modules'
 ];
 
-// Configure the transformer
+// Configure the transformer with proper Babel setup
 config.transformer = {
   ...config.transformer,
+  babelTransformerPath: require.resolve('metro-react-native-babel-transformer'),
+  enableBabelRCLookup: true,
   minifierPath: require.resolve('metro-minify-terser'),
   minifierConfig: {
-    // Terser options
     keep_classnames: true,
     keep_fnames: true,
     mangle: {
