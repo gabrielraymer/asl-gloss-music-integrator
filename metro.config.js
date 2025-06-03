@@ -46,4 +46,7 @@ config.transformer.getTransformOptions = async () => ({
   },
 });
 
+// Enable package exports resolution
+config.resolver.unstable_enablePackageExports = true;
+
 module.exports = config;
