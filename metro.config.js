@@ -1,24 +1,24 @@
 const { getDefaultConfig } = require('expo/metro-config');
 
-const config = getDefaultConfig(__dirname);
+const defaultConfig = getDefaultConfig(__dirname);
 
 // Add additional asset extensions
-config.resolver.assetExts = [
-  ...config.resolver.assetExts,
+defaultConfig.resolver.assetExts = [
+  ...defaultConfig.resolver.assetExts,
   'db',
   'sqlite'
 ];
 
 // Add additional source extensions including TypeScript
-config.resolver.sourceExts = [
-  ...config.resolver.sourceExts,
+defaultConfig.resolver.sourceExts = [
+  ...defaultConfig.resolver.sourceExts,
   'mjs',
   'cjs'
 ];
 
-// Configure the transformer with proper Babel setup
-config.transformer = {
-  ...config.transformer,
+// Configure the transformer with proper Babel setup while preserving default behavior
+defaultConfig.transformer = {
+  ...defaultConfig.transformer,
   babelTransformerPath: require.resolve('metro-react-native-babel-transformer'),
   enableBabelRCLookup: true,
   minifierPath: require.resolve('metro-minify-terser'),
@@ -33,20 +33,12 @@ config.transformer = {
 };
 
 // Configure the watchFolders to include node_modules
-config.watchFolders = [
-  ...(config.watchFolders || []),
+defaultConfig.watchFolders = [
+  ...(defaultConfig.watchFolders || []),
   'node_modules'
 ];
 
-// Add transform options to handle TypeScript files in node_modules
-config.transformer.getTransformOptions = async () => ({
-  transform: {
-    experimentalImportSupport: false,
-    inlineRequires: true,
-  },
-});
-
 // Enable package exports resolution
-config.resolver.unstable_enablePackageExports = true;
+defaultConfig.resolver.unstable_enablePackageExports = true;
 
-module.exports = config;
+module.exports = defaultConfig;
