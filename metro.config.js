@@ -9,7 +9,9 @@ defaultConfig.resolver.assetExts = [
 ];
 
 defaultConfig.resolver.sourceExts = [
-  ...defaultConfig.resolver.sourceExts,
+  'js',
+  'jsx',
+  'json',
   'mjs',
   'cjs'
 ];
