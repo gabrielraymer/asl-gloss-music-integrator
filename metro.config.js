@@ -12,6 +12,8 @@ defaultConfig.resolver.assetExts = [
 // Add additional source extensions including TypeScript
 defaultConfig.resolver.sourceExts = [
   ...defaultConfig.resolver.sourceExts,
+  'ts',
+  'tsx',
   'mjs',
   'cjs'
 ];
