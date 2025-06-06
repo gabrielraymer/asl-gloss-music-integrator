@@ -8,11 +8,13 @@ defaultConfig.resolver.assetExts = [
   'sqlite'
 ];
 
-// Only include JavaScript extensions
+// Configure source extensions to include TypeScript
 defaultConfig.resolver.sourceExts = [
   'js',
   'jsx',
   'json',
+  'ts',
+  'tsx',
   'mjs',
   'cjs'
 ];
