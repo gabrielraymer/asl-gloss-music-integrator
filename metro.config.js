@@ -8,6 +8,7 @@ defaultConfig.resolver.assetExts = [
   'sqlite'
 ];
 
+// Only include JavaScript extensions
 defaultConfig.resolver.sourceExts = [
   'js',
   'jsx',
