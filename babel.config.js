@@ -17,6 +17,8 @@ module.exports = function(api) {
             '.js',
             '.jsx',
             '.json',
+            '.ts',
+            '.tsx',
             '.mjs',
             '.cjs'
           ],

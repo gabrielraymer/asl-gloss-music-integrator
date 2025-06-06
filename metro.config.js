@@ -8,6 +8,7 @@ defaultConfig.resolver.assetExts = [
   'sqlite'
 ];
 
+// Explicitly define source extensions without spreading
 defaultConfig.resolver.sourceExts = [
   'js',
   'jsx',
@@ -19,25 +20,8 @@ defaultConfig.resolver.sourceExts = [
 ];
 
 defaultConfig.transformer = {
-  ...defaultConfig.transformer,
   babelTransformerPath: require.resolve('metro-react-native-babel-transformer'),
-  enableBabelRCLookup: true,
-  minifierPath: require.resolve('metro-minify-terser'),
-  minifierConfig: {
-    keep_classnames: true,
-    keep_fnames: true,
-    mangle: {
-      keep_classnames: true,
-      keep_fnames: true
-    }
-  }
+  assetPlugins: ['expo-asset/tools/hashAssetFiles'],
 };
-
-defaultConfig.watchFolders = [
-  ...(defaultConfig.watchFolders || []),
-  'node_modules'
-];
-
-defaultConfig.resolver.unstable_enablePackageExports = true;
 
 module.exports = defaultConfig;
